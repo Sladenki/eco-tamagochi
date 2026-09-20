@@ -101,8 +101,8 @@ export function SortingGame() {
   if (!current) return null;
 
   return (
-    <div className="flex min-h-[72vh] flex-col">
-      <div className="flex items-center justify-between gap-3">
+    <div className="flex min-h-[68vh] min-w-0 flex-col overflow-x-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-clay">
           Перетащи в контейнер
         </p>

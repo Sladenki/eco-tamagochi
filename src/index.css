@@ -20,6 +20,8 @@ html,
 body,
 #root {
   height: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -42,8 +44,9 @@ a {
 .font-display {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.045em;
-  line-height: 1.15;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .plant-sway {

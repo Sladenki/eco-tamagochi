@@ -8,7 +8,7 @@ export function TeamGrove() {
       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-clay">
         Люди мира
       </p>
-      <h2 className="mt-3 max-w-2xl font-display text-[1.85rem] text-forest sm:text-[2.35rem] md:text-[2.7rem]">
+      <h2 className="mt-3 max-w-2xl break-words font-display text-[1.45rem] text-forest sm:text-[2.35rem] md:text-[2.7rem]">
         Мы растим маленький мир, о котором хочется заботиться.
       </h2>
       <p className="mt-5 max-w-xl text-[1.05rem] leading-[1.7] text-ink/70">
@@ -69,7 +69,7 @@ function MemberNote({ member }: { member: TeamMember }) {
               ))}
               {!hasMeta && (
                 <p className="text-ink/45">
-                  Строки роли, достижений и фактов живут в data/team.ts — их легко дописать.
+                  Жду инфы, котята
                 </p>
               )}
             </div>

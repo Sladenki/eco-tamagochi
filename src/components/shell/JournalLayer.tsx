@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { LivingPlant } from '../plant/LivingPlant';
 import { useGame } from '../../hooks/useGame';
@@ -6,8 +7,14 @@ export function JournalLayer({ children }: { children: ReactNode }) {
   const { stage, watering, setView } = useGame();
 
   return (
-    <div className="absolute inset-0 z-20 overflow-y-auto bg-[#f4eee3]/93 backdrop-blur-[12px]">
-      <div className="mx-auto min-h-full max-w-3xl px-5 pb-32 pt-[max(1.1rem,env(safe-area-inset-top))]">
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 12 }}
+      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+      className="absolute inset-0 z-20 overflow-x-hidden overflow-y-auto overscroll-contain bg-[#f4eee3]/93 backdrop-blur-[12px]"
+    >
+      <div className="mx-auto min-h-full min-w-0 max-w-3xl px-4 pb-32 pt-[max(1.1rem,env(safe-area-inset-top))] sm:px-5">
         {children}
       </div>
       <button
@@ -18,6 +25,6 @@ export function JournalLayer({ children }: { children: ReactNode }) {
       >
         <LivingPlant stage={stage} watering={watering} compact interactive={false} />
       </button>
-    </div>
+    </motion.div>
   );
 }

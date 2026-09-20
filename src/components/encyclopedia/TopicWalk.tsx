@@ -59,7 +59,7 @@ export function TopicWalk({
           <span className="mt-3 inline-flex self-start rounded-full bg-cream px-3 py-1 text-[12px] font-medium text-leaf">
             {step.kicker}
           </span>
-          <h2 className="mt-3 max-w-xl font-display text-[1.75rem] text-forest md:text-[2.1rem]">
+          <h2 className="mt-3 max-w-xl break-words font-display text-[1.45rem] text-forest md:text-[2.1rem]">
             {step.title}
           </h2>
           <p className="mt-4 max-w-xl text-[1.05rem] leading-[1.7] text-ink/70">{step.body}</p>
@@ -68,7 +68,7 @@ export function TopicWalk({
 
       {step.type === 'visual' && (
         <>
-          <h2 className="mt-3 max-w-xl font-display text-[1.75rem] text-forest md:text-[2.1rem]">
+          <h2 className="mt-3 max-w-xl break-words font-display text-[1.45rem] text-forest md:text-[2.1rem]">
             {step.title}
           </h2>
           <p className="mt-3 max-w-xl text-[1.05rem] leading-[1.7] text-ink/70">{step.body}</p>
@@ -80,7 +80,7 @@ export function TopicWalk({
 
       {step.type === 'bridge' && (
         <>
-          <h2 className="mt-3 max-w-xl font-display text-[1.75rem] text-forest md:text-[2.1rem]">
+          <h2 className="mt-3 max-w-xl break-words font-display text-[1.45rem] text-forest md:text-[2.1rem]">
             {step.title}
           </h2>
           <p className="mt-4 max-w-xl text-[1.05rem] leading-[1.7] text-ink/70">{step.body}</p>
@@ -136,7 +136,7 @@ function QuestionStep({
 
   return (
     <>
-      <h2 className="mt-3 max-w-xl font-display text-[1.75rem] text-forest md:text-[2.1rem]">
+      <h2 className="mt-3 max-w-xl break-words font-display text-[1.45rem] text-forest md:text-[2.1rem]">
         {step.question}
       </h2>
       <div className="mt-6 space-y-2">

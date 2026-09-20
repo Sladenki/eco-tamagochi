@@ -3,15 +3,15 @@ import { useGame } from '../../hooks/useGame';
 
 const places = [
   'mt-2 ml-0',
-  'mt-10 ml-[12%]',
-  'mt-4 ml-[4%]',
-  'mt-14 ml-[18%]',
-  'mt-6 ml-[2%]',
-  'mt-12 ml-[10%]',
-  'mt-3 ml-[16%]',
-  'mt-8 ml-[6%]',
-  'mt-5 ml-[14%]',
-  'mt-11 ml-[1%]',
+  'mt-6 sm:mt-10 sm:ml-[12%]',
+  'mt-4 sm:ml-[4%]',
+  'mt-8 sm:mt-14 sm:ml-[18%]',
+  'mt-5 sm:mt-6 sm:ml-[2%]',
+  'mt-6 sm:mt-12 sm:ml-[10%]',
+  'mt-3 sm:ml-[16%]',
+  'mt-6 sm:mt-8 sm:ml-[6%]',
+  'mt-4 sm:mt-5 sm:ml-[14%]',
+  'mt-6 sm:mt-11 sm:ml-[1%]',
 ];
 
 export function GardenOfCare() {

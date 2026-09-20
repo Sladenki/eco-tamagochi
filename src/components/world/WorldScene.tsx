@@ -23,10 +23,10 @@ export function WorldScene() {
     <div className="relative h-full w-full overflow-hidden">
       <Landscape sky={game.sky} dull={dull} />
 
-      <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between px-5 pt-[max(1rem,env(safe-area-inset-top))]">
-        <div>
-          <p className="font-display text-2xl text-forest md:text-[1.85rem]">Росток</p>
-          <p className="mt-0.5 text-xs text-forest/55">твой маленький мир</p>
+      <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 px-3 pt-[max(0.7rem,env(safe-area-inset-top))] sm:px-5 sm:pt-[max(1rem,env(safe-area-inset-top))]">
+        <div className="min-w-0">
+          <p className="font-display text-xl text-forest sm:text-2xl md:text-[1.85rem]">Росток</p>
+          <p className="mt-0.5 hidden text-xs text-forest/55 sm:block">твой маленький мир</p>
         </div>
         <AtmosphereChip />
       </header>
@@ -42,7 +42,7 @@ export function WorldScene() {
         onPrompt={setPrompt}
       />
 
-      <div className="absolute inset-x-0 bottom-[22%] z-10 flex items-end justify-center px-4 md:bottom-[20%]">
+      <div className="absolute inset-x-0 bottom-[26%] z-10 flex items-end justify-center px-4 sm:bottom-[22%] md:bottom-[20%]">
         {game.state.companionPlanted && (
           <div className="absolute bottom-8 right-[18%] hidden sm:block md:right-[22%]">
             <CompanionBloom />
@@ -63,13 +63,13 @@ export function WorldScene() {
         />
       </div>
 
-      <div className="absolute inset-x-0 bottom-[8.6rem] z-10 px-6 text-center sm:bottom-[8.4rem]">
-        <p className="font-display text-[1.4rem] leading-[1.2] text-forest md:text-[1.85rem]">
+      <div className="absolute inset-x-0 bottom-[7.4rem] z-10 px-4 text-center sm:bottom-[8.4rem] sm:px-6">
+        <p className="font-display text-[1.2rem] leading-[1.2] text-forest sm:text-[1.4rem] md:text-[1.85rem]">
           {touchLine ?? (intro ? 'Это твоё растение' : game.status.title)}
         </p>
-        <p className="mx-auto mt-2 max-w-md text-[0.95rem] leading-relaxed text-ink/60">
+        <p className="mx-auto mt-1.5 max-w-md text-[0.82rem] leading-relaxed text-ink/60 sm:mt-2 sm:text-[0.95rem]">
           {intro
-            ? 'Оно уже смотрит на тебя. Полей росток или выбери действие слева.'
+            ? 'Оно уже смотрит на тебя. Коснись ростка или значка слева.'
             : game.status.detail}
         </p>
       </div>

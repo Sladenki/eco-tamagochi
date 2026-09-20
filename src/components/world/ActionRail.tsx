@@ -26,7 +26,7 @@ export function ActionRail({
   onPrompt,
 }: Props) {
   return (
-    <aside className="absolute left-3 top-[34%] z-20 flex w-[min(48vw,230px)] -translate-y-1/2 flex-col gap-2 sm:left-5 sm:w-56 md:top-[42%]">
+    <aside className="absolute left-2 top-[6.6rem] z-20 flex w-auto flex-col gap-1.5 sm:left-5 sm:top-[34%] sm:w-56 sm:-translate-y-1/2 sm:gap-2 md:top-[42%]">
       {dead && (
         <RailButton
           label="Посадить заново"
@@ -100,12 +100,13 @@ function RailButton({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center gap-3 rounded-[18px] bg-paper/95 px-3 py-2.5 text-left shadow-[0_8px_24px_rgba(30,74,54,0.12)] ring-1 ring-forest/10 backdrop-blur-sm transition hover:bg-white hover:ring-forest/25"
+      aria-label={`${label}. ${hint}`}
+      className="flex h-11 w-11 items-center justify-center rounded-full bg-paper/95 text-forest shadow-[0_8px_24px_rgba(30,74,54,0.12)] ring-1 ring-forest/10 backdrop-blur-sm transition hover:bg-white hover:ring-forest/25 sm:h-auto sm:w-full sm:justify-start sm:gap-3 sm:rounded-[18px] sm:px-3 sm:py-2.5 sm:text-left"
     >
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-cream text-forest">
+      <span className="grid h-11 w-11 shrink-0 place-items-center sm:h-10 sm:w-10 sm:rounded-2xl sm:bg-cream">
         {children}
       </span>
-      <span className="min-w-0">
+      <span className="hidden min-w-0 sm:block">
         <span className="block truncate text-[13px] font-semibold leading-tight text-forest">
           {label}
         </span>

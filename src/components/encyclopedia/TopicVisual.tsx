@@ -19,7 +19,7 @@ function Co2Leaf() {
     <button
       type="button"
       onClick={() => setN((v) => v + 1)}
-      className="relative mx-auto mt-8 block h-48 w-full max-w-sm"
+      className="relative mx-auto mt-8 block h-40 w-full max-w-sm overflow-hidden sm:h-48"
     >
       <svg viewBox="0 0 320 180" className="h-full w-full">
         <path d="M170 150c-50-10-90-60-70-110 70 10 100 60 70 110Z" fill="#3f7a4c" />
