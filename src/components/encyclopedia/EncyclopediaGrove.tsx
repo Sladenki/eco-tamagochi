@@ -14,13 +14,13 @@ export function EncyclopediaGrove() {
 
   return (
     <div className="pb-8">
-      <p className="text-[11px] uppercase tracking-[0.2em] text-clay">Исследование</p>
-      <h2 className="font-display text-4xl leading-tight text-forest md:text-5xl">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-clay">Исследование</p>
+      <h2 className="font-display text-[1.85rem] text-forest sm:text-[2.4rem] md:text-[2.85rem]">
         Мир можно читать,
         <br />
         касаясь его.
       </h2>
-      <p className="mt-3 max-w-lg text-ink/65">
+      <p className="mt-4 max-w-lg text-[1.05rem] leading-[1.7] text-ink/70">
         Не статьи. Тропы. Каждый шаг — факт, вопрос или жест, который возвращает к ростку.
       </p>
 

@@ -85,6 +85,8 @@ export type TeamMember = {
   role: string;
   achievements: string[];
   facts: string[];
+  photo: string;
+  photoPos: string;
 };
 
 export type EncyclopediaStep =

@@ -65,13 +65,11 @@ export function Landscape({ sky, dull }: { sky: Sky; dull: boolean }) {
           d="M0 410 C 220 388 400 430 640 404 C 900 374 1120 430 1440 400 L 1440 500 L 0 500 Z"
           fill="#c9b07d"
         />
-        <Tree x={120} y={300} h={90} fill="#3d6b45" />
-        <Tree x={220} y={318} h={70} fill="#2f5a38" />
-        <Tree x={1260} y={292} h={110} fill="#355f3d" />
-        <Tree x={1360} y={320} h={78} fill="#2c5334" />
         <ellipse cx="180" cy="430" rx="18" ry="8" fill="#8a8a7a" opacity="0.45" />
         <ellipse cx="1180" cy="438" rx="22" ry="9" fill="#7d7a6c" opacity="0.4" />
       </svg>
+
+      <Grove />
 
       <div
         className="absolute inset-x-0 bottom-0 h-28"
@@ -86,23 +84,105 @@ export function Landscape({ sky, dull }: { sky: Sky; dull: boolean }) {
   );
 }
 
-function Tree({
-  x,
-  y,
-  h,
-  fill,
+function Grove() {
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <TreeMark
+        className="absolute bottom-[34%] left-[3%] h-[22vmin] w-[14vmin] min-h-28 min-w-16 plant-sway"
+        variant="oak"
+        delay="0s"
+      />
+      <TreeMark
+        className="absolute bottom-[31%] left-[11%] h-[16vmin] w-[10vmin] min-h-20 min-w-12 plant-sway is-thirsty"
+        variant="round"
+        delay="-2s"
+      />
+      <TreeMark
+        className="absolute right-[12%] bottom-[36%] h-[18vmin] w-[9vmin] min-h-24 min-w-11 plant-sway"
+        variant="pine"
+        delay="-1.2s"
+      />
+      <TreeMark
+        className="absolute right-[4%] bottom-[32%] h-[26vmin] w-[15vmin] min-h-32 min-w-16 plant-sway is-thirsty"
+        variant="oak"
+        delay="-3.4s"
+      />
+    </div>
+  );
+}
+
+function TreeMark({
+  className,
+  variant,
+  delay,
 }: {
-  x: number;
-  y: number;
-  h: number;
-  fill: string;
+  className: string;
+  variant: 'oak' | 'round' | 'pine';
+  delay: string;
 }) {
-  const w = h * 0.72;
+  return (
+    <svg viewBox="0 0 80 120" className={className} style={{ animationDelay: delay }} aria-hidden>
+      {variant === 'oak' && <OakCanopy />}
+      {variant === 'round' && <RoundCanopy />}
+      {variant === 'pine' && <PineCanopy />}
+    </svg>
+  );
+}
+
+function OakCanopy() {
   return (
     <g>
-      <rect x={x - 4} y={y} width="8" height={h * 0.35} fill="#5a3a24" rx="2" />
-      <ellipse cx={x} cy={y} rx={w * 0.55} ry={h * 0.42} fill={fill} />
-      <ellipse cx={x - w * 0.18} cy={y + 8} rx={w * 0.28} ry={h * 0.22} fill={fill} opacity="0.85" />
+      <ellipse cx="40" cy="114" rx="16" ry="3.5" fill="#5c3a24" opacity="0.18" />
+      <path
+        d="M37 62c-1.2 16-2.4 28-4 50h14c-1.8-18-3-34-4.2-50-1.6-2.2-4.2-2.2-5.8 0Z"
+        fill="#6b4a32"
+      />
+      <path d="M39.2 64c.6 8 .4 18-.2 28" stroke="#5a3a24" strokeWidth="1.2" fill="none" opacity="0.35" />
+      <path
+        d="M40 8c12 1 22 9 24 20 10 2 16 12 12 22 8 6 6 18-4 22 2 12-8 20-20 18-8 8-24 6-28-6-12 0-18-12-12-22-6-8-2-20 8-24C22 16 30 7 40 8Z"
+        fill="#355f3c"
+      />
+      <path
+        d="M42 14c8 2 14 8 15 16 6 1 10 8 6 14-1 8-9 12-16 10-4 4-12 3-14-4-6 0-9-7-5-12-3-5 0-12 6-14 2-6 5-10 8-10Z"
+        fill="#4f7d52"
+        opacity="0.9"
+      />
+      <path
+        d="M28 48c6-8 16-10 22-4 2 6-2 12-10 14-8 1-14-3-12-10Z"
+        fill="#2c4f34"
+        opacity="0.55"
+      />
+    </g>
+  );
+}
+
+function RoundCanopy() {
+  return (
+    <g>
+      <ellipse cx="40" cy="114" rx="12" ry="3" fill="#5c3a24" opacity="0.16" />
+      <path d="M38 70c-1 14-2 28-3 42h10c-1-14-2-28-3-42-1-1.6-3-1.6-4 0Z" fill="#6b4a32" />
+      <path
+        d="M40 22c11 0 20 9 20 22 8 2 12 12 6 20-2 12-14 18-24 14-10 6-24 0-24-14-6-6-4-16 4-20 0-13 8-22 18-22Z"
+        fill="#3d6b45"
+      />
+      <path
+        d="M36 28c8 0 14 6 14 14 4 1 7 7 3 12-2 7-10 10-16 7-6 3-14 0-14-8-4-3-2-10 3-12 0-8 5-13 10-13Z"
+        fill="#5f8a56"
+        opacity="0.85"
+      />
+    </g>
+  );
+}
+
+function PineCanopy() {
+  return (
+    <g>
+      <ellipse cx="40" cy="114" rx="10" ry="2.6" fill="#5c3a24" opacity="0.16" />
+      <path d="M38.5 78c-.4 10-.8 22-1.4 34h6.8c-.6-12-1-24-1.4-34-.4-1-2.6-1-4 0Z" fill="#6b4a32" />
+      <path d="M40 18 58 48H22Z" fill="#2f5a38" />
+      <path d="M40 34 62 66H18Z" fill="#355f3d" />
+      <path d="M40 52 64 88H16Z" fill="#2c5334" />
+      <path d="M40 20 50 40H30Z" fill="#4a7a52" opacity="0.55" />
     </g>
   );
 }

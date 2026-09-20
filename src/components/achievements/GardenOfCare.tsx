@@ -20,9 +20,11 @@ export function GardenOfCare() {
 
   return (
     <div>
-      <p className="text-[11px] uppercase tracking-[0.2em] text-clay">Следы заботы</p>
-      <h2 className="font-display text-4xl text-forest md:text-5xl">Не награды. Память.</h2>
-      <p className="mt-3 max-w-lg text-ink/65">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-clay">Следы заботы</p>
+      <h2 className="mt-3 font-display text-[1.85rem] text-forest sm:text-[2.4rem] md:text-[2.75rem]">
+        Не награды. Память.
+      </h2>
+      <p className="mt-4 max-w-lg text-[1.05rem] leading-[1.7] text-ink/70">
         Здесь нет монет и уровней. Только то, что растение уже знает о тебе.
       </p>
 

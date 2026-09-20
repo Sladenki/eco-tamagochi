@@ -8,6 +8,8 @@ export const teamMembers: TeamMember[] = [
     role: '',
     achievements: [],
     facts: [],
+    photo: '/photos/max.jpg',
+    photoPos: '52% 22%',
   },
   {
     name: 'Полина Поух',
@@ -15,6 +17,8 @@ export const teamMembers: TeamMember[] = [
     role: '',
     achievements: [],
     facts: [],
+    photo: '/photos/polina.jpg',
+    photoPos: '42% 18%',
   },
   {
     name: 'Саша Палухина',
@@ -22,6 +26,8 @@ export const teamMembers: TeamMember[] = [
     role: '',
     achievements: [],
     facts: [],
+    photo: '/photos/sasha.jpg',
+    photoPos: '48% 22%',
   },
   {
     name: 'Марк Сахар',
@@ -29,5 +35,7 @@ export const teamMembers: TeamMember[] = [
     role: '',
     achievements: [],
     facts: [],
+    photo: '/photos/mark.jpg',
+    photoPos: '50% 18%',
   },
 ];
