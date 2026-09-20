@@ -11,9 +11,6 @@ export function TeamGrove() {
       <h2 className="mt-3 max-w-2xl break-words font-display text-[1.45rem] text-forest sm:text-[2.35rem] md:text-[2.7rem]">
         Мы растим маленький мир, о котором хочется заботиться.
       </h2>
-      <p className="mt-5 max-w-xl text-[1.05rem] leading-[1.7] text-ink/70">
-        Не отдел и не штатное расписание. Четверо из КГТУ, которые собрали эту поляну.
-      </p>
 
       <div className="mt-12 space-y-3">
         {teamMembers.map((member) => (
@@ -39,6 +36,10 @@ function MemberNote({ member }: { member: TeamMember }) {
       <img
         src={member.photo}
         alt={member.name}
+        loading="lazy"
+        decoding="async"
+        width={80}
+        height={80}
         className="h-16 w-16 shrink-0 rounded-[22px] object-cover ring-2 ring-paper sm:h-20 sm:w-20"
         style={{ objectPosition: member.photoPos }}
       />

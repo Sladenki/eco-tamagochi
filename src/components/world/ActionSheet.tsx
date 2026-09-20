@@ -35,7 +35,7 @@ export function ActionSheet({
     <div className="fixed inset-0 z-40 flex items-end justify-center p-3 pb-[5.5rem] sm:items-center sm:pb-3">
       <button
         type="button"
-        className="absolute inset-0 bg-[#1c2b24]/35 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-[#1c2b24]/40"
         aria-label="Закрыть"
         onClick={onClose}
       />

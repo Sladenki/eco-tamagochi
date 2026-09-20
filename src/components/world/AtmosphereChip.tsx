@@ -5,7 +5,7 @@ export function AtmosphereChip() {
   const clean = atmosphere.cleanliness;
 
   return (
-    <div className="pointer-events-auto w-[min(46vw,148px)] overflow-hidden rounded-2xl bg-paper/90 shadow-[0_8px_24px_rgba(30,74,54,0.1)] ring-1 ring-forest/8 backdrop-blur-md sm:w-[min(58vw,240px)] sm:rounded-[22px]">
+    <div className="pointer-events-auto w-[min(46vw,148px)] overflow-hidden rounded-2xl bg-paper shadow-sm ring-1 ring-forest/8 sm:w-[min(58vw,240px)] sm:rounded-[22px] sm:shadow-[0_8px_24px_rgba(30,74,54,0.1)]">
       <div
         className="hidden h-10 sm:block"
         style={{

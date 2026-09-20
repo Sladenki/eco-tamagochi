@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { memo, type ReactNode } from 'react';
 import { Recycle, Sparkles, Sprout, Trash2 } from 'lucide-react';
 import { wasteItems } from '../../data/gameData';
 import type { WorldLitter } from '../../types';
@@ -15,7 +15,7 @@ type Props = {
   onPrompt: (prompt: WorldPrompt) => void;
 };
 
-export function ActionRail({
+export const ActionRail = memo(function ActionRail({
   litter,
   debris,
   companionPlanted,
@@ -83,7 +83,7 @@ export function ActionRail({
       )}
     </aside>
   );
-}
+});
 
 function RailButton({
   label,
@@ -101,7 +101,7 @@ function RailButton({
       type="button"
       onClick={onClick}
       aria-label={`${label}. ${hint}`}
-      className="flex h-11 w-11 items-center justify-center rounded-full bg-paper/95 text-forest shadow-[0_8px_24px_rgba(30,74,54,0.12)] ring-1 ring-forest/10 backdrop-blur-sm transition hover:bg-white hover:ring-forest/25 sm:h-auto sm:w-full sm:justify-start sm:gap-3 sm:rounded-[18px] sm:px-3 sm:py-2.5 sm:text-left"
+      className="flex h-11 w-11 items-center justify-center rounded-full bg-paper text-forest shadow-sm ring-1 ring-forest/10 sm:h-auto sm:w-full sm:justify-start sm:gap-3 sm:rounded-[18px] sm:px-3 sm:py-2.5 sm:text-left sm:shadow-[0_8px_24px_rgba(30,74,54,0.12)] sm:transition sm:hover:bg-white sm:hover:ring-forest/25"
     >
       <span className="grid h-11 w-11 shrink-0 place-items-center sm:h-10 sm:w-10 sm:rounded-2xl sm:bg-cream">
         {children}

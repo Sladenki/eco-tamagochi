@@ -269,9 +269,9 @@ export function markCareDay(state: GameState): GameState {
   });
 }
 
-export function skyColors(state: GameState) {
-  const haze = state.pollution / 100;
-  const wilt = getPlantStage(state) === 'dead' ? 0.35 : 0;
+export function skyColors(pollution: number, dead = false) {
+  const haze = pollution / 100;
+  const wilt = dead ? 0.35 : 0;
   const mix = Math.min(1, haze * 0.85 + wilt);
   return {
     top: mixHex('#C5DCE8', '#8F9590', mix),

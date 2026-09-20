@@ -68,7 +68,8 @@ export function SortingGame() {
   };
 
   const onDrag = (_: unknown, info: PanInfo) => {
-    setOver(hitBin(info.point, binRefs.current) ?? null);
+    const id = hitBin(info.point, binRefs.current) ?? null;
+    setOver((prev) => (prev === id ? prev : id));
   };
 
   const onDragEnd = (_: unknown, info: PanInfo) => {

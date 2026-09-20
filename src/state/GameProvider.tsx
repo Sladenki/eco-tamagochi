@@ -1,6 +1,8 @@
 import {
   useCallback,
+  useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -20,6 +22,7 @@ import {
   todayISO,
   unlockAchievements,
 } from '../utils/plantLogic';
+import { pathFromView, titleFromView, viewFromPath } from '../utils/routes';
 import { loadState, saveState } from '../utils/storage';
 import { GameContext, type GameContextValue, type SortResult } from './gameContext';
 
@@ -35,7 +38,9 @@ function hydrate(): { state: GameState; hoursAway: number; fresh: boolean } {
 export function GameProvider({ children }: { children: ReactNode }) {
   const boot = useMemo(() => hydrate(), []);
   const [state, setState] = useState<GameState>(boot.state);
-  const [view, setView] = useState<View>('world');
+  const [view, setViewState] = useState<View>(() =>
+    viewFromPath(window.location.pathname),
+  );
   const [hoursAway] = useState(boot.hoursAway);
   const [welcome, setWelcome] = useState<string | null>(() => {
     if (boot.fresh) return null;
@@ -55,6 +60,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
   const say = useCallback((text: string, tone: Feedback['tone'] = 'good') => {
     const item = { id: `${Date.now()}`, text, tone };
     setFeedback(item);
@@ -63,16 +71,48 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }, 2800);
   }, []);
 
-  const stage = getPlantStage(state);
-  const status = getHumanStatus(state, hoursAway, false);
-  const atmosphere = getAtmosphere(state);
-  const sky = skyColors(state);
-  const todayHabit = habitForDate(todayISO());
+  const stage = useMemo(() => getPlantStage(state), [state]);
+  const status = useMemo(() => getHumanStatus(state, hoursAway, false), [state, hoursAway]);
+  const atmosphere = useMemo(() => getAtmosphere(state), [state.pollution]);
+  const sky = useMemo(
+    () => skyColors(state.pollution, stage === 'dead'),
+    [state.pollution, stage],
+  );
+  const todayHabit = useMemo(() => habitForDate(todayISO()), []);
   const habitDoneToday = state.lastHabitDate === todayISO();
+  const dismissWelcome = useCallback(() => setWelcome(null), []);
+
+  const setView = useCallback((next: View) => {
+    setViewState(next);
+    const path = pathFromView(next);
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
+    document.title = titleFromView(next);
+  }, []);
+
+  useEffect(() => {
+    document.title = titleFromView(view);
+    const canonical = pathFromView(view);
+    if (window.location.pathname !== canonical) {
+      window.history.replaceState(null, '', canonical);
+    }
+  }, [view]);
+
+  useEffect(() => {
+    const onPop = () => {
+      const next = viewFromPath(window.location.pathname);
+      setViewState(next);
+      document.title = titleFromView(next);
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   const waterPlant = useCallback(() => {
-    if (getPlantStage(state) === 'dead') return;
-    if (state.water > 88) {
+    const current = stateRef.current;
+    if (getPlantStage(current) === 'dead') return;
+    if (current.water > 88) {
       say('Почва ещё влажная — подождём.', 'info');
       return;
     }
@@ -89,7 +129,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }),
     );
     say('Вода ушла к корням. Стало легче.', 'good');
-  }, [persist, say, state]);
+  }, [persist, say]);
 
   const sortWaste = useCallback(
     (type: WasteType, bin: BinId): SortResult => {
@@ -140,7 +180,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
   );
 
   const plantCompanion = useCallback(() => {
-    if (state.companionPlanted) return;
+    if (stateRef.current.companionPlanted) return;
     persist((prev) =>
       markCareDay({
         ...prev,
@@ -151,10 +191,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }),
     );
     say('Рядом появился ещё один живой след.', 'good');
-  }, [persist, say, state.companionPlanted]);
+  }, [persist, say]);
 
   const completeHabit = useCallback(() => {
-    if (state.lastHabitDate === todayISO()) return;
+    if (stateRef.current.lastHabitDate === todayISO()) return;
     persist((prev) =>
       markCareDay({
         ...prev,
@@ -167,7 +207,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }),
     );
     say('Обещание дня принято. Мир стал спокойнее.', 'good');
-  }, [persist, say, state.lastHabitDate, todayHabit.id]);
+  }, [persist, say, todayHabit.id]);
 
   const learnFact = useCallback(
     (id: string) => {
@@ -229,8 +269,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [persist, say]);
 
   const touchPlant = useCallback(() => {
-    if (stage === 'dead') return 'Земля тихая. Можно начать сначала.';
-    if (state.water < 28) {
+    const current = stateRef.current;
+    const currentStage = getPlantStage(current);
+    if (currentStage === 'dead') return 'Земля тихая. Можно начать сначала.';
+    if (current.water < 28) {
       waterPlant();
       return 'Пьёт.';
     }
@@ -240,42 +282,73 @@ export function GameProvider({ children }: { children: ReactNode }) {
         vitality: clamp(prev.vitality + 1.2),
       }),
     );
-    if (stage === 'blooming') return 'Цветок качнулся навстречу.';
-    if (stage === 'wilting') return 'Оно ещё здесь. Ему нужна вода.';
+    if (currentStage === 'blooming') return 'Цветок качнулся навстречу.';
+    if (currentStage === 'wilting') return 'Оно ещё здесь. Ему нужна вода.';
     return 'Ему хорошо, что ты рядом.';
-  }, [persist, stage, state.water, waterPlant]);
+  }, [persist, waterPlant]);
 
-  const value: GameContextValue = {
-    state,
-    view,
-    setView,
-    stage,
-    status,
-    atmosphere,
-    sky,
-    hoursAway,
-    welcome,
-    dismissWelcome: () => setWelcome(null),
-    feedback,
-    watering,
-    todayHabit,
-    habitDoneToday,
-    waterPlant,
-    sortWaste,
-    pickLitter,
-    cleanDebris,
-    plantCompanion,
-    completeHabit,
-    learnFact,
-    setTopicStep,
-    completeTopic,
-    revive,
-    touchPlant,
-    activeTopicId,
-    setActiveTopicId,
-    sortFocus,
-    setSortFocus,
-  };
+  const value = useMemo<GameContextValue>(
+    () => ({
+      state,
+      view,
+      setView,
+      stage,
+      status,
+      atmosphere,
+      sky,
+      hoursAway,
+      welcome,
+      dismissWelcome,
+      feedback,
+      watering,
+      todayHabit,
+      habitDoneToday,
+      waterPlant,
+      sortWaste,
+      pickLitter,
+      cleanDebris,
+      plantCompanion,
+      completeHabit,
+      learnFact,
+      setTopicStep,
+      completeTopic,
+      revive,
+      touchPlant,
+      activeTopicId,
+      setActiveTopicId,
+      sortFocus,
+      setSortFocus,
+    }),
+    [
+      state,
+      view,
+      setView,
+      stage,
+      status,
+      atmosphere,
+      sky,
+      hoursAway,
+      welcome,
+      dismissWelcome,
+      feedback,
+      watering,
+      todayHabit,
+      habitDoneToday,
+      waterPlant,
+      sortWaste,
+      pickLitter,
+      cleanDebris,
+      plantCompanion,
+      completeHabit,
+      learnFact,
+      setTopicStep,
+      completeTopic,
+      revive,
+      touchPlant,
+      activeTopicId,
+      sortFocus,
+    ],
+  );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 }

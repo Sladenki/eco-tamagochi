@@ -35,23 +35,24 @@ body {
 button,
 a {
   font-family: inherit;
+  touch-action: manipulation;
 }
 
-::selection {
-  background: #e6c35c55;
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .font-display {
-  font-family: var(--font-display);
-  font-weight: 600;
   letter-spacing: -0.03em;
-  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .plant-sway {
+  display: block;
   transform-origin: 50% 100%;
-  animation: sway 4.8s ease-in-out infinite;
+  animation: sway 6.5s ease-in-out infinite;
+  backface-visibility: hidden;
 }
 
 .plant-sway.is-thirsty {
@@ -123,6 +124,14 @@ a {
 
 .rain-drop {
   animation: drop 1.1s ease-in forwards;
+}
+
+@media (hover: none) {
+  .plant-sway,
+  .cloud-drift,
+  .leaf-pulse {
+    animation: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

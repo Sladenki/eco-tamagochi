@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { memo } from 'react';
 import type { PlantStage } from '../../types';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   onTouch?: () => void;
 };
 
-export function LivingPlant({
+export const LivingPlant = memo(function LivingPlant({
   stage,
   watering,
   compact,
@@ -26,20 +26,18 @@ export function LivingPlant({
         ? { type: 'button' as const, onClick: onTouch }
         : {})}
       className={`relative border-0 bg-transparent p-0 ${
-        interactive ? 'cursor-pointer' : ''
+        interactive ? 'cursor-pointer active:scale-[0.97]' : ''
       } ${compact ? 'h-24 w-20' : 'h-[min(46vh,380px)] w-[min(78vw,320px)] sm:h-[min(58vh,420px)] sm:w-[min(72vw,340px)]'}`}
       aria-label={interactive ? 'Твоё растение' : undefined}
     >
-      <motion.div
-        className="h-full w-full"
-        whileTap={interactive ? { scale: 0.97 } : undefined}
-        transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+      <span
+        className={`block h-full w-full ${
+          still ? '' : thirsty ? 'plant-sway is-thirsty' : 'plant-sway'
+        }`}
       >
       <svg
         viewBox="0 0 200 280"
-        className={`h-full w-full overflow-visible ${
-          still ? 'plant-sway is-still' : thirsty ? 'plant-sway is-thirsty' : 'plant-sway'
-        }`}
+        className="h-full w-full"
       >
         <ellipse
           cx="100"
@@ -58,26 +56,15 @@ export function LivingPlant({
           fill="#8a5a34"
         />
 
-        <AnimatePresence mode="wait">
-          <motion.g
-            key={stage}
-            initial={{ opacity: 0, scale: 0.84, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            style={{ transformOrigin: '100px 248px' }}
-          >
-            {stage === 'seed' && <Seed />}
-            {stage === 'sprout' && <Sprout wilt={false} />}
-            {stage === 'young' && <Young wilt={false} />}
-            {stage === 'healthy' && <Healthy wilt={false} bloom={false} />}
-            {stage === 'blooming' && <Healthy wilt={false} bloom />}
-            {stage === 'wilting' && <Healthy wilt bloom={false} />}
-            {stage === 'dead' && <Dead />}
-          </motion.g>
-        </AnimatePresence>
+        {stage === 'seed' && <Seed />}
+        {stage === 'sprout' && <Sprout wilt={false} />}
+        {stage === 'young' && <Young wilt={false} />}
+        {stage === 'healthy' && <Healthy wilt={false} bloom={false} />}
+        {stage === 'blooming' && <Healthy wilt={false} bloom />}
+        {stage === 'wilting' && <Healthy wilt bloom={false} />}
+        {stage === 'dead' && <Dead />}
       </svg>
-      </motion.div>
+      </span>
 
       {watering && <Rain />}
       {!compact && !still && interactive && (
@@ -87,7 +74,7 @@ export function LivingPlant({
       )}
     </Tag>
   );
-}
+});
 
 function Seed() {
   return (
@@ -216,7 +203,7 @@ function Dead() {
 function Rain() {
   return (
     <div className="pointer-events-none absolute inset-0">
-      {[18, 36, 52, 68, 82].map((left, i) => (
+      {[28, 52, 74].map((left, i) => (
         <span
           key={left}
           className="rain-drop absolute top-4 h-5 w-1 rounded-full bg-[#7eb3c9]"
@@ -229,7 +216,7 @@ function Rain() {
 
 export function CompanionBloom() {
   return (
-    <svg viewBox="0 0 80 110" className="h-24 w-16 plant-sway">
+    <svg viewBox="0 0 80 110" className="h-24 w-16">
       <ellipse cx="40" cy="100" rx="16" ry="5" fill="#5c3a24" opacity="0.3" />
       <path d="M40 100c0-40 0-58 0-70" stroke="#2f6b40" strokeWidth="2.4" fill="none" />
       <path d="M40 78c-12-2-18-12-16-22 10 2 14 10 16 22Z" fill="#5fa35f" />

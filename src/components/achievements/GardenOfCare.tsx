@@ -24,9 +24,6 @@ export function GardenOfCare() {
       <h2 className="mt-3 font-display text-[1.85rem] text-forest sm:text-[2.4rem] md:text-[2.75rem]">
         Не награды. Память.
       </h2>
-      <p className="mt-4 max-w-lg text-[1.05rem] leading-[1.7] text-ink/70">
-        Здесь нет монет и уровней. Только то, что растение уже знает о тебе.
-      </p>
 
       <div className="mt-8">
         {achievementDefs.map((item, i) => {

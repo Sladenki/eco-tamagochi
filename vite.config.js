@@ -9,4 +9,18 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
+  build: {
+    target: 'es2020',
+    cssCodeSplit: true,
+    modulePreload: { polyfill: false },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+            return 'react';
+          }
+        },
+      },
+    },
+  },
 })

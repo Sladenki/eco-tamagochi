@@ -1,5 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CompanionBloom, LivingPlant } from '../plant/LivingPlant';
 import { ActionRail } from './ActionRail';
 import { ActionSheet, type WorldPrompt } from './ActionSheet';
@@ -13,11 +12,22 @@ export function WorldScene() {
   const [touchLine, setTouchLine] = useState<string | null>(null);
   const [intro, setIntro] = useState(true);
   const dull = game.stage === 'dead' || game.stage === 'wilting';
+  const { stage, touchPlant } = game;
 
   useEffect(() => {
     const timer = window.setTimeout(() => setIntro(false), 6000);
     return () => window.clearTimeout(timer);
   }, []);
+
+  const onTouch = useCallback(() => {
+    if (stage === 'dead') {
+      setPrompt({ kind: 'dead' });
+      return;
+    }
+    const line = touchPlant();
+    setTouchLine(line);
+    window.setTimeout(() => setTouchLine(null), 2200);
+  }, [stage, touchPlant]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -51,15 +61,7 @@ export function WorldScene() {
         <LivingPlant
           stage={game.stage}
           watering={game.watering}
-          onTouch={() => {
-            if (game.stage === 'dead') {
-              setPrompt({ kind: 'dead' });
-              return;
-            }
-            const line = game.touchPlant();
-            setTouchLine(line);
-            window.setTimeout(() => setTouchLine(null), 2200);
-          }}
+          onTouch={onTouch}
         />
       </div>
 
@@ -74,23 +76,18 @@ export function WorldScene() {
         </p>
       </div>
 
-      <AnimatePresence>
-        {game.welcome && (
-          <motion.button
-            type="button"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            onClick={game.dismissWelcome}
-            className="absolute left-1/2 top-[18%] z-20 -translate-x-1/2 rounded-full bg-paper/90 px-5 py-3 font-display text-lg text-forest shadow-lg"
-          >
-            {game.welcome}
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {game.welcome && (
+        <button
+          type="button"
+          onClick={game.dismissWelcome}
+          className="absolute left-1/2 top-[18%] z-20 -translate-x-1/2 rounded-full bg-paper/90 px-5 py-3 font-display text-lg text-forest shadow-md"
+        >
+          {game.welcome}
+        </button>
+      )}
 
       {game.feedback && (
-        <div className="pointer-events-none absolute left-1/2 top-[38%] z-20 -translate-x-1/2 rounded-full bg-forest px-4 py-2 text-sm text-paper shadow-lg">
+        <div className="pointer-events-none absolute left-1/2 top-[38%] z-20 -translate-x-1/2 rounded-full bg-forest px-4 py-2 text-sm text-paper shadow-md">
           {game.feedback.text}
         </div>
       )}

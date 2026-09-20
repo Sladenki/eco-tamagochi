@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { memo, type CSSProperties } from 'react';
 
 type Sky = {
   top: string;
@@ -9,23 +9,33 @@ type Sky = {
   hillFar: string;
 };
 
-export function Landscape({ sky, dull }: { sky: Sky; dull: boolean }) {
+export const Landscape = memo(function Landscape({
+  sky,
+  dull,
+}: {
+  sky: Sky;
+  dull: boolean;
+}) {
   return (
-    <div className="absolute inset-0 overflow-hidden" style={{ filter: dull ? 'saturate(0.72)' : undefined }}>
+    <div
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{ contain: 'paint' }}
+    >
       <div
         className="absolute inset-0"
         style={{
           background: `linear-gradient(180deg, ${sky.top} 0%, ${sky.mid} 42%, ${sky.bottom} 100%)`,
+          opacity: dull ? 0.86 : 1,
         }}
       />
 
       <div
-        className="absolute right-[12%] top-[11%] h-16 w-16 rounded-full md:h-24 md:w-24"
-        style={{ background: sky.sun, boxShadow: `0 0 60px ${sky.sun}` }}
+        className="absolute right-[12%] top-[11%] h-12 w-12 rounded-full sm:h-16 sm:w-16 md:h-24 md:w-24 md:shadow-[0_0_60px_var(--sun)]"
+        style={{ background: sky.sun, ['--sun' as string]: sky.sun }}
       />
 
       <svg
-        className="cloud-drift absolute left-[8%] top-[14%] w-28 opacity-80 md:w-40"
+        className="cloud-drift absolute left-[8%] top-[14%] hidden w-28 opacity-80 sm:block md:w-40"
         viewBox="0 0 160 60"
         fill="white"
       >
@@ -34,7 +44,7 @@ export function Landscape({ sky, dull }: { sky: Sky; dull: boolean }) {
         <ellipse cx="108" cy="36" rx="28" ry="14" />
       </svg>
       <svg
-        className="cloud-drift slow absolute right-[18%] top-[20%] w-24 opacity-70 md:w-36"
+        className="cloud-drift slow absolute right-[18%] top-[20%] hidden w-24 opacity-70 sm:block md:w-36"
         viewBox="0 0 160 60"
         fill="white"
       >
@@ -82,30 +92,26 @@ export function Landscape({ sky, dull }: { sky: Sky; dull: boolean }) {
       />
     </div>
   );
-}
+});
 
 function Grove() {
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div className="absolute inset-0">
       <TreeMark
-        className="absolute bottom-[34%] left-[3%] h-[22vmin] w-[14vmin] min-h-28 min-w-16 plant-sway"
+        className="absolute bottom-[34%] left-[3%] h-[22vmin] w-[14vmin] min-h-28 min-w-16"
         variant="oak"
-        delay="0s"
       />
       <TreeMark
-        className="absolute bottom-[31%] left-[11%] h-[16vmin] w-[10vmin] min-h-20 min-w-12 plant-sway is-thirsty"
+        className="absolute bottom-[31%] left-[11%] hidden h-[16vmin] w-[10vmin] min-h-20 min-w-12 sm:block"
         variant="round"
-        delay="-2s"
       />
       <TreeMark
-        className="absolute right-[12%] bottom-[36%] h-[18vmin] w-[9vmin] min-h-24 min-w-11 plant-sway"
+        className="absolute right-[12%] bottom-[36%] hidden h-[18vmin] w-[9vmin] min-h-24 min-w-11 md:block"
         variant="pine"
-        delay="-1.2s"
       />
       <TreeMark
-        className="absolute right-[4%] bottom-[32%] h-[26vmin] w-[15vmin] min-h-32 min-w-16 plant-sway is-thirsty"
+        className="absolute right-[4%] bottom-[32%] h-[26vmin] w-[15vmin] min-h-32 min-w-16"
         variant="oak"
-        delay="-3.4s"
       />
     </div>
   );
@@ -114,14 +120,12 @@ function Grove() {
 function TreeMark({
   className,
   variant,
-  delay,
 }: {
   className: string;
   variant: 'oak' | 'round' | 'pine';
-  delay: string;
 }) {
   return (
-    <svg viewBox="0 0 80 120" className={className} style={{ animationDelay: delay }} aria-hidden>
+    <svg viewBox="0 0 80 120" className={className} aria-hidden>
       {variant === 'oak' && <OakCanopy />}
       {variant === 'round' && <RoundCanopy />}
       {variant === 'pine' && <PineCanopy />}
