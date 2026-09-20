@@ -79,11 +79,18 @@ export type Feedback = {
   tone: 'good' | 'soft' | 'info';
 };
 
+export type TeamAchievement = {
+  title: string;
+  tags: string[];
+  line: string;
+};
+
 export type TeamMember = {
   name: string;
   university: string;
   role: string;
-  achievements: string[];
+  tags: string[];
+  achievements: TeamAchievement[];
   facts: string[];
   photo: string;
   photoPos: string;
